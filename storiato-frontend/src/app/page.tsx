@@ -134,6 +134,42 @@ const mockCompletedNovels: NovelCardInfo[] = [
   // Add more mock completed novels...
 ];
 
+// Add mock data for specific authors
+const mockThuVienNovels: NovelCardInfo[] = [
+  {
+    id: 'thu-vien-novel-1',
+    title: 'Câu Chuyện Của Thư Viễn 1',
+    slug: 'thu-vien-novel-1',
+    authorName: 'Thư Viễn',
+    coverImageUrl: '/placeholder-cover.jpg',
+    latestChapterNumber: 120,
+    genres: [{ id: 'ngon-tinh', name: 'Ngôn Tình', slug: 'ngon-tinh' }],
+  },
+   {
+    id: 'thu-vien-novel-2',
+    title: 'Hành Trình Của Thư Viễn',
+    slug: 'thu-vien-novel-2',
+    authorName: 'Thư Viễn',
+    coverImageUrl: '/placeholder-cover.jpg',
+    latestChapterNumber: 95,
+    genres: [{ id: 'do-thi', name: 'Đô Thị', slug: 'do-thi' }],
+  },
+  // Add more...
+];
+
+const mockMiraNovels: NovelCardInfo[] = [
+ {
+    id: 'mira-novel-1',
+    title: 'Giấc Mơ Của Mira',
+    slug: 'mira-novel-1',
+    authorName: 'Mira',
+    coverImageUrl: '/placeholder-cover.jpg',
+    latestChapterNumber: 210,
+    genres: [{ id: 'huyen-huyen', name: 'Huyền Huyễn', slug: 'huyen-huyen' }],
+  },
+  // Add more...
+];
+
 // --- Placeholder Data Fetching Functions ---
 
 // Placeholder function to get hot novels (will be replaced by API call later)
@@ -157,12 +193,26 @@ async function getCompletedNovelData(): Promise<NovelCardInfo[]> {
   return mockCompletedNovels;
 }
 
+// Add functions for specific authors
+async function getThuVienNovelData(): Promise<NovelCardInfo[]> {
+  console.log('Fetching mock Thu Vien novel data');
+  // TODO: Replace with actual API call: GET /api/novels?author=thu-vien
+  return mockThuVienNovels;
+}
+async function getMiraNovelData(): Promise<NovelCardInfo[]> {
+  console.log('Fetching mock Mira novel data');
+  // TODO: Replace with actual API call: GET /api/novels?author=mira
+  return mockMiraNovels;
+}
+
 // --- Page Component ---
 export default async function Home() {
   // Fetch all sets of data
   const hotNovels = await getHotNovelData();
   const newUpdates = await getNewUpdateData();
-  const completedNovels = await getCompletedNovelData(); // Fetch completed novels
+  const completedNovels = await getCompletedNovelData();
+  const thuVienNovels = await getThuVienNovelData(); // Fetch author data
+  const miraNovels = await getMiraNovelData();     // Fetch author data
 
   return (
     <div className="space-y-8"> {/* Add spacing between sections */}
@@ -205,6 +255,34 @@ export default async function Home() {
           </div>
         ) : (
           <p>Không tìm thấy truyện full nào.</p>
+        )}
+      </section>
+
+      {/* Thư Viễn Novels Section - Added */}
+      <section>
+        <h1 className="text-2xl font-semibold mb-4 border-b pb-2">Truyện của Thư Viễn</h1>
+        {thuVienNovels.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            {thuVienNovels.map((novel) => (
+              <NovelCard key={`thu-vien-${novel.id}`} novel={novel} /> // Added key prefix
+            ))}
+          </div>
+        ) : (
+          <p>Không tìm thấy truyện nào của tác giả Thư Viễn.</p>
+        )}
+      </section>
+
+      {/* Mira Novels Section - Added */}
+      <section>
+        <h1 className="text-2xl font-semibold mb-4 border-b pb-2">Truyện của Mira</h1>
+        {miraNovels.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            {miraNovels.map((novel) => (
+              <NovelCard key={`mira-${novel.id}`} novel={novel} /> // Added key prefix
+            ))}
+          </div>
+        ) : (
+          <p>Không tìm thấy truyện nào của tác giả Mira.</p>
         )}
       </section>
 
